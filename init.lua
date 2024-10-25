@@ -20,10 +20,6 @@ require("lazy").setup({
   {'hrsh7th/nvim-cmp'}
 })
 
-vim.o.background = "dark" -- or "light" for light mode
-vim.cmd([[colorscheme gruvbox]])
-
-vim.wo.number = true
 
 require 'nvim-treesitter.configs'.setup {
     highlight = {
@@ -36,7 +32,7 @@ require 'nvim-treesitter.configs'.setup {
 -- https://www.youtube.com/watch?v=LaS32vctfOY
 
 -- Reserve a space in the gutter
-vim.opt.signcolumn = 'yes'
+
 
 -- Add cmp_nvim_lsp capabilities settings to lspconfig
 -- This should be executed before you configure any language server
@@ -88,4 +84,18 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({}),
 })
 
+
+-- LSP 
+
 require'lspconfig'.pyright.setup{}
+
+
+-- General options
+
+vim.o.background = "dark" -- or "light" for light mode
+vim.cmd([[colorscheme gruvbox]])
+vim.wo.number = true
+vim.o.linebreak = true
+vim.opt.signcolumn = 'yes'
+-- vim.opt.shiftwidth = 4
+vim.opt.breakindent = true
