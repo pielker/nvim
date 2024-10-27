@@ -13,8 +13,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
-  { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
+  {"ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
   {'VonHeikemen/lsp-zero.nvim', branch = 'v4.x'},
+  {'nvim-telescope/telescope.nvim', branch = '0.1.x'},
   {'neovim/nvim-lspconfig'},
   {'hrsh7th/cmp-nvim-lsp'},
   {'hrsh7th/nvim-cmp'}
@@ -99,3 +100,4 @@ vim.o.linebreak = true
 vim.opt.signcolumn = 'yes'
 -- vim.opt.shiftwidth = 4
 vim.opt.breakindent = true
+vim.api.nvim_set_option("clipboard","unnamed")
