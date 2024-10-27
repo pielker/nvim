@@ -14,7 +14,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   {"ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
-  {'VonHeikemen/lsp-zero.nvim', branch = 'v4.x'},
   {'nvim-telescope/telescope.nvim', branch = '0.1.x'},
   {'neovim/nvim-lspconfig'},
   {'hrsh7th/cmp-nvim-lsp'},
