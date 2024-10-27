@@ -15,9 +15,12 @@ require("lazy").setup({
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   {"ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
   {'nvim-telescope/telescope.nvim', branch = '0.1.x'},
-  {'neovim/nvim-lspconfig'},
   {'hrsh7th/cmp-nvim-lsp'},
-  {'hrsh7th/nvim-cmp'}
+  {'hrsh7th/nvim-cmp'},
+  {"williamboman/mason.nvim"},
+  {"williamboman/mason-lspconfig.nvim"}, 
+  {'neovim/nvim-lspconfig'},
+	{"hrsh7th/cmp-cmdline"}
 })
 
 
@@ -85,6 +88,35 @@ cmp.setup({
 })
 
 
+-- `:` cmdline setup.
+cmp.setup.cmdline(':', {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = cmp.config.sources({
+		{ name = 'path' }
+	}, {
+		{
+			name = 'cmdline',
+			option = {
+				ignore_cmds = { 'Man', '!' }
+			}
+		}
+	})
+})
+
+
+cmp.setup.cmdline('/', {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = {
+		{ name = 'buffer' }
+	}
+})
+
+
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+
+
 -- LSP 
 
 require'lspconfig'.pyright.setup{}
@@ -97,6 +129,7 @@ vim.cmd([[colorscheme gruvbox]])
 vim.wo.number = true
 vim.o.linebreak = true
 vim.opt.signcolumn = 'yes'
--- vim.opt.shiftwidth = 4
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
 vim.opt.breakindent = true
 vim.api.nvim_set_option("clipboard","unnamed")
