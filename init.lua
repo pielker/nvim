@@ -20,7 +20,7 @@ require("lazy").setup({
   {"williamboman/mason.nvim"},
   {"williamboman/mason-lspconfig.nvim"}, 
   {'neovim/nvim-lspconfig'},
-	{"hrsh7th/cmp-cmdline"}
+  {"hrsh7th/cmp-cmdline"}
 })
 
 
@@ -90,25 +90,25 @@ cmp.setup({
 
 -- `:` cmdline setup.
 cmp.setup.cmdline(':', {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = cmp.config.sources({
-		{ name = 'path' }
-	}, {
-		{
-			name = 'cmdline',
-			option = {
-				ignore_cmds = { 'Man', '!' }
-			}
-		}
-	})
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    {
+      name = 'cmdline',
+      option = {
+        ignore_cmds = { 'Man', '!' }
+      }
+    }
+  })
 })
 
 
 cmp.setup.cmdline('/', {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = {
-		{ name = 'buffer' }
-	}
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
 })
 
 
