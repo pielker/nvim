@@ -127,9 +127,10 @@ require'lspconfig'.pyright.setup{}
 vim.o.background = "dark" -- or "light" for light mode
 vim.cmd([[colorscheme gruvbox]])
 vim.wo.number = true
-vim.o.linebreak = true
+vim.opt.linebreak = true
 vim.opt.signcolumn = 'yes'
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
+vim.opt.expandtab = true
 vim.opt.breakindent = true
 vim.api.nvim_set_option("clipboard","unnamed")
