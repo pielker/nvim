@@ -20,7 +20,8 @@ require("lazy").setup({
   {"williamboman/mason.nvim"},
   {"williamboman/mason-lspconfig.nvim"}, 
   {'neovim/nvim-lspconfig'},
-  {"hrsh7th/cmp-cmdline"}
+  {"hrsh7th/cmp-cmdline"},
+	{'nvim-lualine/lualine.nvim', dependencies = {'nvim-tree/nvim-web-devicons'}}
 })
 
 
@@ -115,7 +116,7 @@ cmp.setup.cmdline('/', {
 
 require("mason").setup()
 require("mason-lspconfig").setup()
-
+require('lualine').setup()
 
 -- LSP 
 
@@ -127,10 +128,10 @@ require'lspconfig'.pyright.setup{}
 vim.o.background = "dark" -- or "light" for light mode
 vim.cmd([[colorscheme gruvbox]])
 vim.wo.number = true
-vim.opt.linebreak = true
-vim.opt.signcolumn = 'yes'
-vim.opt.shiftwidth = 2
-vim.opt.tabstop = 2
-vim.opt.expandtab = true
-vim.opt.breakindent = true
+vim.o.linebreak = true
+vim.o.signcolumn = 'yes'
+vim.o.shiftwidth = 2
+vim.o.tabstop = 2
+vim.o.expandtab = true
+vim.o.breakindent = true
 vim.api.nvim_set_option("clipboard","unnamed")
