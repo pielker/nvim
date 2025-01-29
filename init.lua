@@ -14,32 +14,27 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   {"ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
-  {'nvim-telescope/telescope.nvim', branch = '0.1.x'},
   {'hrsh7th/cmp-nvim-lsp'},
   {'hrsh7th/nvim-cmp'},
   {"williamboman/mason.nvim"},
   {"williamboman/mason-lspconfig.nvim"}, 
   {'neovim/nvim-lspconfig'},
+  {'nvim-java/nvim-java'},
   {"hrsh7th/cmp-cmdline"},
+  {"folke/trouble.nvim", opts = {}},
 	{'nvim-lualine/lualine.nvim', dependencies = {'nvim-tree/nvim-web-devicons'}}
+--  {'m4xshen/autoclose.nvim'}
 })
 
 
-require 'nvim-treesitter.configs'.setup {
-    highlight = {
-        enable = true, -- enable syntax highlighting
-    }
+require("mason").setup()
+require("mason-lspconfig").setup()
+require('lualine').setup()
+--require("autoclose").setup()
+require('java').setup()
+require 'nvim-treesitter.configs'.setup { highlight = { enable = true, }-- enable syntax highlighting 
 }
 
--- NOTE: to make any of this work you need a language server.
--- If you don't know what that is, watch this 5 min video:
--- https://www.youtube.com/watch?v=LaS32vctfOY
-
--- Reserve a space in the gutter
-
-
--- Add cmp_nvim_lsp capabilities settings to lspconfig
--- This should be executed before you configure any language server
 local lspconfig_defaults = require('lspconfig').util.default_config
 lspconfig_defaults.capabilities = vim.tbl_deep_extend(
   'force',
@@ -47,8 +42,6 @@ lspconfig_defaults.capabilities = vim.tbl_deep_extend(
   require('cmp_nvim_lsp').default_capabilities()
 )
 
--- This is where you enable features that only work
--- if there is a language server active in the file
 vim.api.nvim_create_autocmd('LspAttach', {
   desc = 'LSP actions',
   callback = function(event)
@@ -67,11 +60,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- You'll find a list of language servers here:
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
--- These are example language servers. 
-require('lspconfig').gleam.setup({})
-require('lspconfig').ocamllsp.setup({})
 
 local cmp = require('cmp')
 
@@ -81,7 +69,6 @@ cmp.setup({
   },
   snippet = {
     expand = function(args)
-      -- You need Neovim v0.10 to use vim.snippet
       vim.snippet.expand(args.body)
     end,
   },
@@ -89,7 +76,6 @@ cmp.setup({
 })
 
 
--- `:` cmdline setup.
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
@@ -114,16 +100,18 @@ cmp.setup.cmdline('/', {
 
 
 
-require("mason").setup()
-require("mason-lspconfig").setup()
-require('lualine').setup()
+-- LSP
 
--- LSP 
-
+require'lspconfig'.clangd.setup{}
+require'lspconfig'.bashls.setup{}
+require'lspconfig'.cssls.setup{}
+require'lspconfig'.html.setup{}
 require'lspconfig'.pyright.setup{}
+require'lspconfig'.jdtls.setup{}
 
 
 -- General options
+
 
 vim.o.background = "dark" -- or "light" for light mode
 vim.cmd([[colorscheme gruvbox]])
