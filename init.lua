@@ -11,6 +11,10 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
+-------------
+
+
 require("lazy").setup({
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   {"ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
@@ -23,17 +27,38 @@ require("lazy").setup({
   {"hrsh7th/cmp-cmdline"},
   {"folke/trouble.nvim", opts = {}},
 	{'nvim-lualine/lualine.nvim', dependencies = {'nvim-tree/nvim-web-devicons'}}
---  {'m4xshen/autoclose.nvim'}
 })
+
+
+-- General options
+
+
+vim.o.background = "dark" -- or "light" for light mode
+vim.cmd([[colorscheme gruvbox]])
+vim.wo.number = true
+vim.o.linebreak = true
+vim.o.signcolumn = 'yes'
+vim.o.shiftwidth = 2
+vim.o.tabstop = 2
+vim.o.expandtab = true
+vim.o.breakindent = true
+vim.api.nvim_set_option("clipboard","unnamed")
+
+
+-------------
 
 
 require("mason").setup()
 require("mason-lspconfig").setup()
-require('lualine').setup()
---require("autoclose").setup()
-require('java').setup()
-require 'nvim-treesitter.configs'.setup { highlight = { enable = true, }-- enable syntax highlighting 
-}
+require("lualine").setup()
+require("java").setup()
+require("nvim-treesitter.configs").setup({highlight = { enable = true, }})-- enable syntax highlighting 
+
+
+-------------
+
+
+-- LSP config
 
 local lspconfig_defaults = require('lspconfig').util.default_config
 lspconfig_defaults.capabilities = vim.tbl_deep_extend(
@@ -60,6 +85,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+
+-- cmp
 
 local cmp = require('cmp')
 
@@ -98,8 +125,6 @@ cmp.setup.cmdline('/', {
   }
 })
 
-
-
 -- LSP
 
 require'lspconfig'.clangd.setup{}
@@ -108,18 +133,4 @@ require'lspconfig'.cssls.setup{}
 require'lspconfig'.html.setup{}
 require'lspconfig'.pyright.setup{}
 require'lspconfig'.jdtls.setup{}
-
-
--- General options
-
-
-vim.o.background = "dark" -- or "light" for light mode
-vim.cmd([[colorscheme gruvbox]])
-vim.wo.number = true
-vim.o.linebreak = true
-vim.o.signcolumn = 'yes'
-vim.o.shiftwidth = 2
-vim.o.tabstop = 2
-vim.o.expandtab = true
-vim.o.breakindent = true
-vim.api.nvim_set_option("clipboard","unnamed")
+require'lspconfig'.ts_ls.setup{}
