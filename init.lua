@@ -26,7 +26,8 @@ require("lazy").setup({
   {'nvim-java/nvim-java'},
   {"hrsh7th/cmp-cmdline"},
   {"folke/trouble.nvim", opts = {}},
-	{'nvim-lualine/lualine.nvim', dependencies = {'nvim-tree/nvim-web-devicons'}}
+	{'nvim-lualine/lualine.nvim', dependencies = {'nvim-tree/nvim-web-devicons'}},
+  {'lukas-reineke/indent-blankline.nvim', main = "ibl", opts = {},}
 })
 
 
@@ -53,7 +54,7 @@ require("mason-lspconfig").setup()
 require("lualine").setup()
 require("java").setup()
 require("nvim-treesitter.configs").setup({highlight = { enable = true, }})-- enable syntax highlighting 
-
+require("ibl").setup({indent = {char = "│"}}) 
 
 -------------
 
