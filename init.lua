@@ -1,47 +1,33 @@
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+  vim.fn.system({"git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath})
 end
 vim.opt.rtp:prepend(lazypath)
 
-
--------------
-
-
+-- Plugins
 require("lazy").setup({
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
-  {"ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
-  {'hrsh7th/cmp-nvim-lsp'},
-  {'hrsh7th/nvim-cmp'},
-  {"williamboman/mason.nvim"},
-  {"williamboman/mason-lspconfig.nvim"}, 
-  {'neovim/nvim-lspconfig'},
-  {'nvim-java/nvim-java'},
+  {"ellisonleao/gruvbox.nvim", priority = 1000, config = function() vim.cmd("colorscheme gruvbox") end},
+  {"neovim/nvim-lspconfig"},
+  {"williamboman/mason.nvim", config = true},
+  {"williamboman/mason-lspconfig.nvim", config = true},
+  {"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp"}},
   {"hrsh7th/cmp-cmdline"},
+  {"nvim-lualine/lualine.nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, config = true},
+  {"lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}},
   {"folke/trouble.nvim", opts = {}},
-  {'nvim-lualine/lualine.nvim', dependencies = {'nvim-tree/nvim-web-devicons'}},
-  {'lukas-reineke/indent-blankline.nvim', main = "ibl", opts = {}},
-  {"iamcco/markdown-preview.nvim", cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-      build = "cd app && yarn install",
-  init = function()
-    vim.g.mkdp_filetypes = { "markdown" }
-  end,
-  ft = { "markdown" }}
+  {"nvim-java/nvim-java"},
+  {"iamcco/markdown-preview.nvim",
+    cmd = {"MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop"},
+    build = "cd app && yarn install",
+    init = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    ft = { "markdown" }
+  }
 })
 
-
--- General options
-
-
-vim.o.background = "dark" -- or "light" for light mode
-vim.cmd([[colorscheme gruvbox]])
+-- Options générales
+vim.o.background = "dark"
 vim.wo.number = true
 vim.o.linebreak = true
 vim.o.signcolumn = 'yes'
@@ -49,96 +35,62 @@ vim.o.shiftwidth = 2
 vim.o.tabstop = 2
 vim.o.expandtab = true
 vim.o.breakindent = true
-vim.api.nvim_set_option("clipboard","unnamed")
+vim.api.nvim_set_option("clipboard", "unnamed")
 
+-- Treesitter
+require("nvim-treesitter.configs").setup({highlight = { enable = true }})
 
--------------
-
-
-require("mason").setup()
-require("mason-lspconfig").setup()
-require("lualine").setup()
+-- Java setup
 require("java").setup()
-require("nvim-treesitter.configs").setup({highlight = { enable = true, }})-- enable syntax highlighting 
-require("ibl").setup({indent = {char = "│"}}) 
 
--------------
+-- LSP setup
+local lspconfig = require("lspconfig")
+local lsp_defaults = lspconfig.util.default_config
+lsp_defaults.capabilities = vim.tbl_deep_extend('force', lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-
--- LSP config
-
-local lspconfig_defaults = require('lspconfig').util.default_config
-lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-  'force',
-  lspconfig_defaults.capabilities,
-  require('cmp_nvim_lsp').default_capabilities()
-)
-
-vim.api.nvim_create_autocmd('LspAttach', {
-  desc = 'LSP actions',
+vim.api.nvim_create_autocmd("LspAttach", {
+  desc = "LSP Keybindings",
   callback = function(event)
     local opts = {buffer = event.buf}
-
-    vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', opts)
-    vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-    vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-    vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-    vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
-    vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
-    vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
-    vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-    vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-    vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
-    vim.keymap.set("n", "<space>e", "<cmd>lua vim.diagnostic.open_float(0, {scope=line})<cr>", opts)
+    local keymap = vim.keymap.set
+    keymap("n", "K", vim.lsp.buf.hover, opts)
+    keymap("n", "gd", vim.lsp.buf.definition, opts)
+    keymap("n", "gD", vim.lsp.buf.declaration, opts)
+    keymap("n", "gi", vim.lsp.buf.implementation, opts)
+    keymap("n", "gr", vim.lsp.buf.references, opts)
+    keymap("n", "<F2>", vim.lsp.buf.rename, opts)
+    keymap({"n", "x"}, "<F3>", function() vim.lsp.buf.format({async = true}) end, opts)
+    keymap("n", "<F4>", vim.lsp.buf.code_action, opts)
+    keymap("n", "<space>e", function() vim.diagnostic.open_float(0, {scope="line"}) end, opts)
   end,
 })
 
--- cmp
-
-local cmp = require('cmp')
-
+-- Autocompletion (cmp)
+local cmp = require("cmp")
 cmp.setup({
-  sources = {
-    {name = 'nvim_lsp'},
-  },
-  snippet = {
-    expand = function(args)
-      vim.snippet.expand(args.body)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert({}),
+  sources = {{ name = "nvim_lsp" }},
+  snippet = {expand = function(args) vim.snippet.expand(args.body) end},
+  mapping = cmp.mapping.preset.insert({})
 })
-
 
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    {
-      name = 'cmdline',
-      option = {
-        ignore_cmds = { 'Man', '!' }
-      }
-    }
-  })
+  sources = cmp.config.sources({{ name = 'path' }}, {{ name = 'cmdline', option = { ignore_cmds = { 'Man', '!' } } }})
 })
-
 
 cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
+  sources = {{ name = 'buffer' }}
 })
 
--- LSP
-
-require'lspconfig'.clangd.setup{}
-require'lspconfig'.bashls.setup{}
-require'lspconfig'.cssls.setup{}
-require'lspconfig'.html.setup{}
-require'lspconfig'.pyright.setup{}
-require'lspconfig'.jdtls.setup{}
-require'lspconfig'.ts_ls.setup{}
-
+-- LSP servers
+local servers = { "clangd",
+                  "bashls", 
+                  "cssls", 
+                  "html", 
+                  "pyright", 
+                  "jdtls", 
+                  "ts_ls" }
+for _, server in ipairs(servers) do
+  lspconfig[server].setup({})
+end
