@@ -26,8 +26,14 @@ require("lazy").setup({
   {'nvim-java/nvim-java'},
   {"hrsh7th/cmp-cmdline"},
   {"folke/trouble.nvim", opts = {}},
-	{'nvim-lualine/lualine.nvim', dependencies = {'nvim-tree/nvim-web-devicons'}},
-  {'lukas-reineke/indent-blankline.nvim', main = "ibl", opts = {},}
+  {'nvim-lualine/lualine.nvim', dependencies = {'nvim-tree/nvim-web-devicons'}},
+  {'lukas-reineke/indent-blankline.nvim', main = "ibl", opts = {}},
+  {"iamcco/markdown-preview.nvim", cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+      build = "cd app && yarn install",
+  init = function()
+    vim.g.mkdp_filetypes = { "markdown" }
+  end,
+  ft = { "markdown" }}
 })
 
 
@@ -83,9 +89,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
     vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
     vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+    vim.keymap.set("n", "<space>e", "<cmd>lua vim.diagnostic.open_float(0, {scope=line})<cr>", opts)
   end,
 })
-
 
 -- cmp
 
@@ -135,3 +141,4 @@ require'lspconfig'.html.setup{}
 require'lspconfig'.pyright.setup{}
 require'lspconfig'.jdtls.setup{}
 require'lspconfig'.ts_ls.setup{}
+
