@@ -1,4 +1,4 @@
--- Lazy.nvim
+-- Lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({"git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath})
@@ -40,10 +40,13 @@ vim.api.nvim_set_option("clipboard", "unnamed")
 -- Treesitter
 require("nvim-treesitter.configs").setup({highlight = { enable = true }})
 
--- Java setup
+-- Java
 require("java").setup()
 
--- LSP setup
+-- Vertical lines indent
+require("ibl").setup({indent = {char = "│"}})
+
+-- LSP
 local lspconfig = require("lspconfig")
 local lsp_defaults = lspconfig.util.default_config
 lsp_defaults.capabilities = vim.tbl_deep_extend('force', lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
