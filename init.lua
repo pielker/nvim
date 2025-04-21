@@ -18,12 +18,16 @@ require("lazy").setup({
   {"lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}},
   {"folke/trouble.nvim", opts = {}},
   {"nvim-java/nvim-java"},
-  {"iamcco/markdown-preview.nvim",
-    cmd = {"MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop"},
-    build = "cd app && yarn install",
+  {"iamcco/markdown-preview.nvim", 
+    cmd = {"MarkdownPreviewToggle", 
+          "MarkdownPreview", 
+          "MarkdownPreviewStop"}, 
+    build = "cd app && yarn install", 
     init = function() vim.g.mkdp_filetypes = { "markdown" } end,
-    ft = { "markdown" }
-  }
+    ft = { "markdown" }},
+  {"lervag/vimtex", 
+    lazy = false, 
+    init = function () vim.g.vimtex_view_method = "skim" end}
 })
 
 -- General
@@ -87,13 +91,13 @@ cmp.setup.cmdline('/', {
 })
 
 -- LSP servers
-local servers = { "clangd",
-                  "bashls", 
-                  "cssls", 
-                  "html", 
-                  "pyright", 
-                  "jdtls", 
-                  "ts_ls" }
+local servers = {"clangd", 
+                "bashls", 
+                "cssls", 
+                "html", 
+                "pyright", 
+                "jdtls", 
+                "ts_ls"}
 for _, server in ipairs(servers) do
   lspconfig[server].setup({})
 end
