@@ -32,14 +32,16 @@ require("lazy").setup({
 
 -- General
 vim.o.background = "dark"
-vim.wo.number = true
+vim.o.number = true
 vim.o.linebreak = true
 vim.o.signcolumn = 'yes'
 vim.o.shiftwidth = 2
 vim.o.tabstop = 2
 vim.o.expandtab = true
 vim.o.breakindent = true
+vim.o.autoread = true
 vim.api.nvim_set_option("clipboard", "unnamed")
+
 
 -- Treesitter
 require("nvim-treesitter.configs").setup({highlight = { enable = true }})
