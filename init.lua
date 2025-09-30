@@ -23,12 +23,9 @@ require("lazy").setup({
           "MarkdownPreview", 
           "MarkdownPreviewStop"}, 
     build = "cd app && yarn install", 
-    init = function() vim.g.mkdp_filetypes = { "markdown" } end,
-    ft = { "markdown" }},
-  {"lervag/vimtex", 
-    lazy = false, 
-    init = function () vim.g.vimtex_view_method = "skim" end}
-})
+    init = function() vim.g.mkdp_filetypes = {"markdown"} end,
+    ft = {"markdown"}}
+  })
 
 -- General
 vim.o.background = "dark"
@@ -53,9 +50,9 @@ require("java").setup()
 require("ibl").setup({indent = {char = "│"}})
 
 -- LSP
-local lspconfig = require("lspconfig")
-local lsp_defaults = lspconfig.util.default_config
-lsp_defaults.capabilities = vim.tbl_deep_extend('force', lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
+--local lspconfig = require("lspconfig")
+--local lsp_defaults = lspconfig.util.default_config
+--lsp_defaults.capabilities = vim.tbl_deep_extend('force', lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 vim.api.nvim_create_autocmd("LspAttach", {
   desc = "LSP Keybindings",
@@ -101,5 +98,6 @@ local servers = {"clangd",
                 "jdtls", 
                 "ts_ls"}
 for _, server in ipairs(servers) do
-  lspconfig[server].setup({})
+  --lspconfig[server].setup({})
+  vim.lsp.enable(servers)
 end
