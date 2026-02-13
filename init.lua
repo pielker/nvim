@@ -39,6 +39,10 @@ vim.o.breakindent = true
 vim.o.autoread = true
 vim.api.nvim_set_option("clipboard", "unnamed")
 
+-- Mappings
+vim.keymap.set('n', '<C-h>', 'gT', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-l>', 'gt', { noremap = true, silent = true })
+
 
 -- Treesitter
 require("nvim-treesitter.configs").setup({highlight = { enable = true }})
@@ -99,5 +103,5 @@ local servers = {"clangd",
                 "ts_ls"}
 for _, server in ipairs(servers) do
   --lspconfig[server].setup({})
-  vim.lsp.enable(servers)
+  vim.lsp.enable(server)
 end
