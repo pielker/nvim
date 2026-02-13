@@ -94,14 +94,11 @@ cmp.setup.cmdline('/', {
 })
 
 -- LSP servers
-local servers = {"clangd", 
-                "bashls", 
-                "cssls", 
-                "html", 
-                "pyright", 
-                "jdtls", 
-                "ts_ls"}
-for _, server in ipairs(servers) do
-  --lspconfig[server].setup({})
-  vim.lsp.enable(server)
-end
+--local servers = {"clangd", 
+--                "bashls", 
+--                "cssls", 
+--                "html", 
+--                "pyright", 
+--                "jdtls", 
+--                "ts_ls"}
+--vim.lsp.enable(servers)
